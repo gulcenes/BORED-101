@@ -1,6 +1,5 @@
-import pyautogui as pg
-import time
 import numpy as np
+
 board = [
     [7,8,0,4,0,0,1,2,0],
     [6,0,0,0,7,5,0,0,9],
@@ -14,17 +13,20 @@ board = [
 ]
 
 
-def possible(board, y, x, val):  # y row , x cols
-    if val in board[y]:  # Check rows
+def possible(board, row, col, val):  # y row , x cols
+    # Check rows
+    if val in board[row]:  
         return False
-    for v in range(9):  # Check cols
-        if board[v][x] == val:
+    # Check cols
+    for r in range(9):  
+        if board[r][col] == val:
             return False
 
-    sqy = (y // 3) * 3  # y//3 0,1,2 *3 to find index
-    sqx = (x // 3) * 3  # x//3 0,1,2
+    # Check Squares
+    sqy = (row // 3) * 3  
+    sqx = (col // 3) * 3  
 
-    for r in range(sqy, sqy + 3):  # Check Squares
+    for r in range(sqy, sqy + 3):  
         for c in range(sqx, sqx + 3):
             if board[r][c] == val:
                 return False
@@ -35,7 +37,7 @@ def find_empty(board):
     for r in range(9):
         for c in range(9):
             if board[r][c] == 0:
-                return r, c  # row, col
+                return r, c
 
     return None
 
