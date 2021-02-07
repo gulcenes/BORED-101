@@ -1,5 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from shutil import which
 import time
 import keyboard
@@ -63,7 +66,13 @@ driver = webdriver.Chrome(executable_path=chrome_path)
 driver.get("https://sudoku.com/expert/")
 
 # Wait until Page loads
-time.sleep(4)
+try:
+    myElem = WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CLASS_NAME, 'game-table')))
+    print("Ready!")
+except TimeoutException:
+    print("TIME OUT!")
+    
+## or time.sleep(4)
 
 # Numpad
 numpad_elements = driver.find_elements(By.XPATH, "//div[@class='numpad-item']/*[name()='svg']/*[name()='path']")
@@ -90,7 +99,7 @@ table = [table[n:n+9] for n in range(0, len(table), 9)]
 # Find Zeros
 zeros = np.argwhere(np.matrix(table) == 0)
 
-# Solve Puzzle
+# Solve
 solve(table)
 
 # Get filled values
